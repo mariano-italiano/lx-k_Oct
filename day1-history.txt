@@ -1,0 +1,72 @@
+watch -n1 kubectl get pods -A
+kubectl get nodes
+sudo apt-get install -y git
+git clone https://github.com/mariano-italiano/lx-k_Oct.git
+cd lx-k_Oct/
+vi deploy-k8s-ubuntu.sh
+cat deploy-k8s-ubuntu.sh
+sudo kubeadm token create --print-join-command
+kubectl get nodes
+kubectl get pods -A
+kubectl get pods -A -o wide
+watch -n1 kubectl get pods -A -o wide
+kubectl cluster-info
+kubectl cluster-info dump
+kubectl cluster-info
+watch -n1 kubectl get pods -A -o wide
+kubectl get nodes
+kubectl get nodes
+kubectl get pods --all-namespaces
+kubectl get pods -A
+kubectl get pods -n kube-system
+kubectl get namespaces
+kubectl  get pods
+kubectl  get pods -n kube-system
+kubectl get ns 
+kubectl api-resources
+kubectl create ns app1
+kubectl get ns
+kubectl describe ns app1
+mkdir day1
+cd day1/
+vi first-pod.yaml
+kubectl apply -f first-pod.yaml
+vi first-pod.yaml
+kubectl apply -f first-pod.yaml
+kubectl get pod
+kubectl get pod -n kube-system
+vi first-pod.yaml 
+kubectl apply -f first-pod.yaml
+kubectl describe pod -n kube-system nginx
+kubectl describe node worker01
+kubectl delete -f first-pod.yaml 
+kubectl run pod1 --image nginx:1.19.2
+kubectl get pod
+kubectl get pod -o wide
+kubectl get pod --show-labels
+kubectl run pod1 --image nginx:1.19.2 -n app1
+kubectl get pod -o wide
+kubectl get pod -o wide -n app1
+kubectl run pod1 --image ng
+kubectl get pod --show-labels
+kubectl run pod2 --image nginx:1.14.1 --labels key1=value1
+kubectl get pod --show-labels
+kubectl run pod3 --image nginx:1.14.1 --labels key1=value2
+kubectl get pod --show-labels
+kubectl get pod --selector key1
+kubectl get pod --selector key1=value1
+kubectl get pod --selector key1 label env=prod
+kubectl get pod --selector key1 env=prod
+kubectl get pod --selector key1=value1 env=prod
+kubectl get pods
+kubectl get pods --show-labels
+kubectl get pods -l key1
+kubectl get pods -l key1 -L env-prod
+kubectl get pods -l key1 env-prod
+kubectl get pods -l key1 env=prod
+kubectl get pods --show-labels
+kubectl get pods -l key1=value1 env=prod
+kubectl label pods -l key1 env=prod
+kubectl get pods --show-labels
+history
+history | awk '$1 > 21' | cut -c 8- > ../day1-history.txt
