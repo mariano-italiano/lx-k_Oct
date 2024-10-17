@@ -1,0 +1,21 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: init-nginx
+spec:
+  containers:
+  - name: application
+    image: nginx
+    volumeMounts:
+      - name: sharedvol
+        mountPath: /usr/share/nginx/html
+  initContainers:
+  - name: prepare
+    image: busybox
+    command: ["sh", "-c", "echo '<html><body><h1>Webstie from init container</h1></body></html>' > /app/index.html "]
+    volumeMounts:
+      - name: sharedvol
+        mountPath: /app
+  volumes:
+  - name: sharedvol
+    emptyDir: {}
