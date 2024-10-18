@@ -1,0 +1,29 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  labels:
+    app: my-nginx2
+  name: my-nginx2
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: my-nginx2
+  strategy: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: my-nginx2
+    spec:
+      containers:
+      - image: nginx
+        name: nginx
+        resources: {}
+      tolerations:
+      - key: "kubernetes.io/env"
+        operator: "Equal"
+        value: "prod" 
+        effect: "NoSchedule"
+status: {}

@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: my-configmap
+data:
+  key1: value1
+  key2: "5"
+  config.json: |
+    {"attr": "val1", "attr2": "val2"}
+  sshd_config: |
+    PermitRootLogin yes
+    Port 2022
+    MatchUsers user1
