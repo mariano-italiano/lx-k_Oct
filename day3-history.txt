@@ -1,0 +1,320 @@
+kubectl get pods
+kubectl get nodes
+kubectl get pod
+kubectl get nodes
+kubectl get pod
+kubectl expose deployment my-deployment --port 80 --name clusterip-svc
+kubectl get svc
+kubectl describe svc clusterip-svc 
+kubectl get pods --show-labels 
+kubectl expose pod init-nginx --port 80 --name init-nginx-svc
+kubectl get svc,pod,ep -o wide
+kubectl scale deployment my-deployment --replicas 3
+kubectl get svc,pod,ep -o wide
+kubectl edit pod init-nginx 
+kubectl get pods --show-labels 
+kubectl get svc,pod,ep -o wide
+kubectl describe ep clusterip-svc 
+kubectl edit pod init-nginx 
+kubectl expose deployment my-deployment --name nodeport-svc --port 80 --type NodePort
+kubectl get svc
+kubectl edit svc nodeport-svc 
+kubectl get svc
+kubectl get sp,svc,pod
+kubectl get ep,svc,pod
+kubectl expose deployment my-deployment --name lb-svc --port 80 --type LoadBalancer
+kubectl get ep,svc,pod
+kubectl edit svc lb-svc 
+kubectl get ep,svc,pod
+cd lx-k_Oct/
+mkdir day3 
+cd day
+cd day3
+vi test-dns.yaml
+kubectl apply -f test-dns.yaml
+kubectl get svc
+kubectl exec -it test-dns -- bash
+kubectl exec -it test-dns -- sh
+kubectl apply -f test-dns.yaml -n app1 
+kubectl -n app1 exec -it test-dns -- sh
+kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/controller-v1.0.0/deploy/static/provider/baremetal/deploy.yaml 
+wget https://raw.githubusercontent.com/kubernetes/ingress-nginx/controller-v1.0.0/deploy/static/provider/baremetal/deploy.yaml 
+kubectl apply -f deploy.yaml 
+kubectl get all -n ingress-nginx
+wathc -n1 kubectl get all -n ingress-nginx
+watch -n1 kubectl get all -n ingress-nginx
+kubectl get all
+kubectl delete all --all 
+kubectl get pods
+kubectl edit svc -n ingress-nginx ingress-nginx-controller
+watch -n1 kubectl get all -n ingress-nginx
+kubectl create deployment  cars --image nginx --replicas 1 
+kubectl create deployment book --image nginx --replicas 1 
+kubectl expose deployment book --port 80 --name books-svc 
+kubectl expose deployment cars --port 80 --name cars-svc 
+kubectl  get deployments.apps,svc
+vi web-ingress.yaml
+kubectl get ingressclasses.networking.k8s.io 
+vi web-ingress.yaml
+vi index-cars.html
+vi index-books.html
+kubectl cp --help
+kubectl get pods
+kubectl cp index-cars.html cars-6985f6dbf7-vflj9:/usr/share/nginx/html/index.html
+kubectl cp index-books.html book-5f56879579-6bpqr:/usr/share/nginx/html/index.html
+kubectl apply -f web-ingress.yaml 
+vi web-ingress.yaml 
+kubectl replace --force -f web-ingress.yaml 
+kubectl delete ingress ingress-wildcard-host 
+kubectl apply -f web-ingress.yaml 
+kubectl describe ingress web-ingress 
+kubectl edit ingress web-ingress 
+kubectl describe ingress web-ingress 
+kubectl events
+kubectl get events -A
+kubectl  get pods
+kubectl describe pods book-5f56879579-6bpqr 
+nodename-pod.yamlvi 
+vi nodename-pod.yaml
+kubectl run nodename-pod --image nginx --dry-run=client -o yaml > nodename-pod.yaml
+vi nodename-pod.yaml
+kubectl apply -f nodename-pod.yaml
+kubectl get pods -o wide
+kubectl run test-pod --image nginx 
+kubectl get pods -o wide
+kubectl delete pod test-pod 
+cp nodename-pod.yaml nodeselector-pod.yaml
+vi nodeselector-pod.yaml
+kubectl apply -f nodeselector-pod.yaml
+kubectl get pods -o wide
+kubectl events
+kubectl get pods -o wide
+kubectl get nodes --show-labels 
+kubectl label nodes worker01 kubernetes.io/env=dev
+kubectl get nodes --show-labels 
+kubectl get pods -o wide
+kubectl describe nodes worker1
+kubectl describe nodes worker01
+kubectl get nodes -o json | jq -r '.items[] | "Node name: \(.metadata.name), Taints: \(.spec.taints[0])"' 
+sudo apt  install jq -y
+kubectl get nodes -o json | jq -r '.items[] | "Node name: \(.metadata.name), Taints: \(.spec.taints[0])"' 
+kubectl taint node worker01 kubernetes.io/env=prod:NoSchedule 
+kubectl get nodes -o json | jq -r '.items[] | "Node name: \(.metadata.name), Taints: \(.spec.taints[0])"' 
+kubectl taint node worker01 kubernetes.io/env-
+kubectl taint node worker02 kubernetes.io/env=prod:NoSchedule 
+kubectl get pods
+kubectl get pods -o wide
+kubectl create deployment my-nginx --replicas 3 --image nginx
+kubectl get pods -o wide
+kubectl create deployment my-nginx2 --replicas 3 --image nginx -o yaml --dry-run=client > my-nginx2.yaml
+vi my-nginx2.yaml
+kubectl apply -f my-nginx2.yaml
+kubectl get pods -o wide
+cp -rp my-nginx2.yaml toleration-pod.yaml
+vi toleration-pod.yaml
+mv toleration-pod.yaml toleration-deploy.yaml 
+vi toleration-deploy.yaml
+vi my-nginx2.yaml
+vi toleration-deploy.yaml
+kubectl apply -f toleration-deploy.yaml
+kubectl get pods -o wide
+kubectl taint node worker02 kubernetes.io/zone=Asia:NoExecute; watch -n1 kubectl get pods -o wide
+vi with-node-waffinity.yaml
+kubectl get nodes --show-labels 
+vi with-node-waffinity.yaml
+kubectl apply -f with-node-waffinity.yaml
+kubectl get pods -o wide
+kubectl events
+kubectl get nodes -o json | jq -r '.items[] | "Node name: \(.metadata.name), Taints: \(.spec.taints[0])"'
+kubectl taint node worker02 kubernetes.io/zone-
+kubectl get nodes -o json | jq -r '.items[] | "Node name: \(.metadata.name), Taints: \(.spec.taints[0])"'
+kubectl taint node worker02 kubernetes.io/env-
+kubectl get nodes -o json | jq -r '.items[] | "Node name: \(.metadata.name), Taints: \(.spec.taints[0])"'
+kubectl get taints
+kubectl get pods -o wide
+kubectl delete pod with-node-affinity 
+kubectl label nodes worker01 kubernetes.io/country=poland
+kubectl label nodes worker02 kubernetes.io/country=france
+mv with-node-waffinity.yaml with-node-affinity.yaml 
+vi with-node-affinity.yaml
+kubectl apply -f with-node-affinity.yaml
+kubectl get pods --o wide
+kubectl get pods -o wide
+vi with-pod-affinity.yaml
+kubectl get pods --show-labels 
+vi with-pod-affinity.yaml
+kubectl apply -f with-pod-affinity.yaml
+kubectl get pods -o wide
+vi with-pod-affinity.yaml with-pod-antiAffinity.yaml
+kubectl apply -f with-pod-antiAffinity.yaml
+vi with-pod-affinity.yaml
+cp -rp with-pod-affinity.yaml with-pod-antiAffinity.yaml
+vi with-pod-affinity.yaml
+kubectl get pod with-pod-affinity -o yaml
+vi with-pod-affinity.yaml
+kubectl apply -f with-pod-antiAffinity.yaml 
+mv with-pod-antiAffinity.yaml with-pod-anti-affinity.yaml
+vi with-pod-anti-affinity.yaml
+kubectl apply -f with-pod-anti-affinity.yaml 
+kubectl get pods -o wide
+vi volume-pod.yaml
+ssh worker01
+ssh 192.168.1.110
+kubectl apply -f volume-pod.yaml 
+kubectl get pods
+kubectl get pods -o wide
+kubectl exec -it volume-pod -- bash
+vi volume-pod.yaml
+kubectl apply -f volume-pod.yaml
+kubectl replace --force -f volume-pod.yaml
+kubectl exec -it volume-pod -- bash
+kubectl get pod -o wide
+kubectl exec -it volume-pod -- bash
+kubectl  get sc 
+vi test-pv.yaml
+vi test-pvc.yaml
+cat test-pv.yaml test-pvc.yaml
+cat test-pv.yaml ; echo "-----------------"test-pvc.yaml
+cat test-pv.yaml ; echo "-----------------"; cattest-pvc.yaml
+cat test-pv.yaml ; echo "-----------------"; cat test-pvc.yaml
+kubectl apply -f test-pv.yaml 
+kubectl apply -f test-pvc.yaml 
+kubectl get pv,pvc
+kubectl edit pvc test-pvc 
+vi test-pvc.yaml 
+kubectl replace --force -f test-pvc.yaml
+kubectl get pv,pvc
+vi pv-volume-pod.yaml
+kubectl apply -f pv-volume-pod.yaml
+kubectl get pod -o wide
+cat index-cars.html 
+kubectl get pod -o wide
+kubectl expose pod pv-volume-pod --name pv-svc --port 80 --type NodePort
+kubectl edit pod pv-volume-pod 
+kubectl expose pod pv-volume-pod --name pv-svc --port 80 --type NodePort
+kubectl get svc
+ssh worker02
+ssh 192.168.1.120
+kubectl exec -it pv-volume-pod -- bash
+kubectl apply -f https://raw.githubusercontent.com/rancher/local-path-provisioner/v0.0.30/deploy/local-path-storage.yaml
+watch -n1 kubectl get all -n local-path-storage
+cp  pv-volume-pod.yaml dynamic-volume-pod.yaml
+vi dynamic-volume-pod.yaml
+vi dynamic-pvc.yaml
+kubectl get sc
+kubectl edit sc local-path 
+kubectl get sc
+kubectl get pv,pvc
+vi dynamic-pvc.yaml
+kubectl apply -f dynamic-pvc.yaml
+kubectl get pv,pvc
+kubectl apply -f dynamic-volume-pod.yaml 
+kubectl get pv,pvc
+kubectl get pods
+vi dynamic-pvc.yaml 
+kubectl get pods -o wide
+ssh worker02
+ssh 192.168.1.120
+kubectl edit sc local-path 
+ssh 192.168.1.120
+kubectl get pv,pvc
+kubectl delete pod dynamic-volume-pod 
+kubectl get pv,pvc
+kubectl delete pvc dynamic-pvc 
+kubectl get pv,pvc
+vi my-configmap.yaml
+kubectl apply -f my-configmap.yaml
+vi my-configmap.yaml
+kubectl apply -f my-configmap.yaml
+kubectl describe cm my-configmap 
+vi mariadb.conf
+kubectl create cm mariadb-cm --from-file mariadb.conf 
+kubectl describe cm mariadb-cm 
+vi env-file
+kubectl create cm from-env-file --from-env-file env-file 
+kubectl describe cm from-env-file 
+vi comfigmap-pod.yaml
+kubectl apply -f comfigmap-pod.yaml
+kubectl get pod 
+kubectl exec -it configmap-pod -- env
+vi configmap-vol-pod.yaml
+kubectl apply -f configmap-vol-pod.yaml
+vi configmap-vol-pod.yaml
+kubectl apply -f configmap-vol-pod.yaml
+kubectl get pod
+kubectl exec -it configmap-vol-pod -- sh
+kubectl edit cm mariadb-cm 
+kubectl describe cm mariadb-cm 
+kubectl exec -it configmap-vol-pod -- sh
+kubectl create secret generic mariadb-pass --from-literal root=Secur3P@ss
+kubectl get secrets mariadb-pass 
+kubectl describe secrets mariadb-pass 
+kubectl get secrets mariadb-pass -o yaml
+echo "U2VjdXIzUEBzcw==" | base64 -d 
+htpasswd
+sudo apt install apache2-utils -y
+htpasswd -c .htpasswd mariola
+cat .htpasswd 
+kubectl create secret generic nginx-htpasswd --from-file .htpasswd 
+kubectl get secrets 
+rm .htpasswd
+vi nginx-config.yaml
+kubectl apply -f nginx-config.yaml
+vi nginx-pod.yaml
+kubectl apply -f nginx-pod.yaml
+kubectl get pods
+kubectl expose pod nginx-pod --name nginx-svc --type NodePort --port 80
+kubectl edit pod nginx-pod 
+kubectl expose pod nginx-pod --name nginx-svc --type NodePort --port 80
+kubectl get svc
+vi job.yaml
+kubectl apply -f job.yaml
+kubectl get job
+kubectl get pods
+watch -n 1 kubectl get pods,job
+cp job.yaml job2.yaml
+vi job2.yaml
+kubectl apply -f job2.yaml
+vi job2.yaml
+kubectl apply -f job2.yaml
+watch -n 1 kubectl get pods,job
+vi cronjob.yaml
+kubectl apply -f cronjob.yaml
+kubectl get pod,cj
+watch -n1 kubectl get pod,cj
+kubectl logs pod/hello-28821003-9np9l
+watch -n1 kubectl get pod,cj
+kubect get pods
+kubectl get pods
+kubectl delete cj hello 
+kubectl get pods
+kubectl create namespace argocd
+kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
+kubectl -n argocd get all
+watch -n1 kubectl -n argocd get all
+kubectl get svc -n argocd
+kubectl edit svc -n argocd argocd-server
+kubectl get svc -n argocd
+kubectl -n argocd get secrets argocd-initial-admin-secret -o jsonpath='{.data.password}'|base64 -d && echo
+ls -la
+cat nodename-pod.yaml
+kubectl get ns
+kubectl get all -n argotest
+kubectl delete pod -n argotest nodename-pod 
+kubectl get all -n argotest
+cat my-configmap.yaml 
+kubectl get all -n argotest
+kubectl get all,cm -n argotest
+kubectl -n argotest delete cm my-configmap 
+kubectl get all,cm -n argotest
+cd ..
+git status
+git add .
+git commit -m "adding day3 files"
+git push
+git pull
+git config pull.rebase false
+git pull
+git push
+history
+history | awk '$1 > 396' | cut -c 8- > day3-history.txt
